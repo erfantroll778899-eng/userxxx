@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fa" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="download.png">
+    <title>XXvideos</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #5b5b5b;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            background-color: #111;
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #f33;
+            text-decoration: none;
+        }
+        .search-bar {
+            width: 500px;
+            padding: 10px 10px;
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+        .search-bar input {
+            width: 70%;
+            padding: 12px;
+            font-size: 18px;
+            border: 1px solid #444;
+            border-radius: 4px 0 0 4px;
+            background: #222;
+            color: white;
+        }
+        .search-bar button {
+
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #f33;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+            
+        }
+        .video-item {
+            position: relative;
+            cursor: pointer;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 10px;
+            border: 1px solid black;
+            
+        }
+        .video-item img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            transition: transform 0.3s;
+        }
+        .video-item:hover img {
+            transform: scale(1.05);
+        }
+        .duration { position: absolute; bottom: 50px; right: 5px; background: rgba(0,0,0,0.7); padding: 3px 8px; font-size: 13px; border-radius: 3px; }
+        .quality { position: absolute; top: 5px; right: 5px; background: #f33; padding: 3px 8px; font-size: 12px; font-weight: bold; border-radius: 3px; }
+        .title { margin-top: 8px; font-size: 14px; line-height: 1.4; height: 40px; overflow: hidden; }
+        .info { font-size: 12px; color: #aaa; margin-top: 5px; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; }
+        .modal-video { width: 90%; max-width: 1200px; height: 80vh; background: #000; }
+        .close { position: absolute; top: 30px; right: 40px; font-size: 50px; color: white; cursor: pointer; z-index: 1001; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">XXvideos</a>
+    </header>
+
+    <div class="search-bar">
+        <input type="text" placeholder="Search videos...">
+        <button>Search</button>
+    </div>
+
+    <div class="container">
+
+        <!-- نمونه با ویدیو محلی تو -->
+        <div class="video-item" 
+             data-video="video1.mp4"
+             data-poster="ddd.jpg">
+            <img src="ddd.jpg" alt="Move Video">
+            <div class="quality">1080p</div>
+            <div class="duration">15 min</div>
+            <div class="title">Hot Scene from Move.mp4</div>
+           
+        </div>
+
+        <!-- فیلم‌های دیگه رو همینجا اضافه کن -->
+        <div class="video-item" 
+             data-video="ln.mp4"
+             data-poster="sss.jpg">
+            <img src="sss.jpg" alt="Video 1">
+            <div class="quality">720p</div><br>
+            <div class="duration">5 min</div>
+            <div class="title">My Second Hot Video</div>
+           
+        </div>
+
+        <div class="video-item" 
+             data-video="eee.mp4"
+             data-poster="rrr.jpg">
+            <img src="rrr.jpg" alt="Video 3">
+            <div class="quality">1440p</div>
+            <div class="duration">20 min</div>
+            <div class="title">Another Great Scene</div>
+           
+        </div>
+
+        <!-- هر چندتا که بخوای اضافه کن، فقط مسیرها رو درست بنویس -->
+
+    </div>
+
+    <div id="modal" class="modal">
+        <span class="close">&times;</span>
+        <video id="player" class="modal-video" controls preload="metadata">
+            <source src="" type="video/mp4">
+            مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+        </video>
+    </div>
+
+    <script>
+        const modal = document.getElementById('modal');
+        const player = document.getElementById('player');
+        const closeBtn = document.querySelector('.close');
+
+        document.querySelectorAll('.video-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const videoSrc = item.getAttribute('data-video');
+                const posterSrc = item.getAttribute('data-poster');
+
+                player.querySelector('source').src = videoSrc;
+                player.poster = posterSrc;
+                player.load();
+                modal.style.display = 'flex';
+                player.play();
+            });
+        });
+
+        closeBtn.onclick = () => {
+            modal.style.display = 'none';
+            player.pause();
+            player.querySelector('source').src = '';
+            player.poster = '';
+            player.load();
+        };
+
+        modal.onclick = (e) => {
+            if (e.target === modal) closeBtn.click();
+        };
+    </script>
+
+</body>
+</html>
